@@ -1,6 +1,7 @@
 package com.nbp.db;
 
 import com.nbp.model.Users;
+import com.nbp.model.VoteTypes;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +10,8 @@ public class NBPdao {
     public static NBPdao instance = null;
     public static Connection connection;
 
-    private PreparedStatement addUserQuery, newUserIdQuery, deleteUserQuery;
+    private PreparedStatement addUserQuery, newUserIdQuery, deleteUserQuery,
+            addVoteTypesQuery, newVoteTypesIdQuery, deleteVoteTypeQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -44,15 +46,24 @@ public class NBPdao {
 
         //queries
         try {
-            addUserQuery = connection.prepareStatement("INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            //USERS
             newUserIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM USERS");
+            addUserQuery = connection.prepareStatement("INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             deleteUserQuery = connection.prepareStatement("DELETE FROM USERS WHERE id=?");
+            //--fali update
+
+
+            //VOTETYPES
+            newVoteTypesIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM VOTETYPES");
+            addVoteTypesQuery = connection.prepareStatement("INSERT INTO VOTETYPES VALUES(?,?)");
+            deleteVoteTypeQuery = connection.prepareStatement("DELETE FROM VOTETYPES WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
+    //USERS
     public int getMaxSizeUsers(){
         try {
             ResultSet rs = newUserIdQuery.executeQuery();
@@ -92,6 +103,31 @@ public class NBPdao {
         try {
             deleteUserQuery.setInt(1, user.getId());
             deleteUserQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //VOTETYPES
+    public void addVoteType(VoteTypes vt){
+        try {
+            ResultSet rs = newVoteTypesIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            addVoteTypesQuery.setInt(1,id);
+            addVoteTypesQuery.setString(2,vt.getName());
+
+            addVoteTypesQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteVoteType(int id) {
+        try {
+            deleteVoteTypeQuery.setInt(1, id);
+            deleteVoteTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

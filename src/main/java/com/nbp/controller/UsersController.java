@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController("/users")
 public class UsersController {
-    private NBPdao nbpDao;
+    /*private NBPdao nbpDao;
 
     @PostMapping("/addUser")
     private ResponseMessage addUser(@RequestBody Users user){
@@ -19,5 +19,5 @@ public class UsersController {
             System.out.println(e.getMessage());
         }
         return new ResponseMessage(true, HttpStatus.OK, "User added successfully!!");
-    }
+    }*/
 }
