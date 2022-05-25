@@ -14,7 +14,7 @@ public class NbpApplication {
     public static void main(String[] args) {
         SpringApplication.run(NbpApplication.class, args);
 
-        NBPdao nbpdao = new NBPdao();
+        /*NBPdao nbpdao = new NBPdao();
         Users newUser = new Users("", 113, new Date(Calendar.getInstance().getTime().getTime()),
                 "TestDisplayName", 4, "", new Date(Calendar.getInstance().getTime().getTime()),
                 "TestLocation", 1, 4, 6, "", 1);
@@ -22,7 +22,7 @@ public class NbpApplication {
 
         newUser.setId(nbpdao.getMaxSizeUsers() - 1);
 
-        nbpdao.deleteUser(newUser);
+        nbpdao.deleteUser(newUser);*/
 
     }
 
