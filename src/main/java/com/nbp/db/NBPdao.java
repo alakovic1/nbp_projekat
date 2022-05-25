@@ -33,7 +33,7 @@ public class NBPdao {
             throw new RuntimeException(e);
         }
         if (connection != null) {
-            System.out.println("Connected");
+            System.out.println("Connected to DB!");
         }
     }
 }
