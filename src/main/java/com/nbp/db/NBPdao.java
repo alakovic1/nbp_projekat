@@ -14,7 +14,8 @@ public class NBPdao {
             newBadgeIdQuery, createBadgeQuery, readBadgeQuery, updateBadgesQuery, deleteBadgeQuery,
             newPostTypesIdQuery, createPostTypesQuery, readPostTypeQuery, updatePostTypeQuery, deletePostTypeQuery,
             newLinkTypesIdQuery, createLinkTypesQuery, readLinkTypeQuery, updateLinkTypeQuery, deleteLinkTypeQuery,
-            newCommentIdQuery, createCommentsQuery, readCommentQuery, updateCommentQuery, deleteCommentQuery;
+            newCommentIdQuery, createCommentsQuery, readCommentQuery, updateCommentQuery, deleteCommentQuery,
+            newPostLinkIdQuery, createPostLinkQuery, readPostLinkQuery, updatePostLinkQuery, deletePostLinkQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -90,6 +91,13 @@ public class NBPdao {
             readCommentQuery = connection.prepareStatement("SELECT * FROM COMMENTS WHERE id=?");
             updateCommentQuery = connection.prepareStatement("UPDATE COMMENTS SET creationdate=?, postid=?, score=?, text=?, userid=? WHERE id=?");
             deleteCommentQuery = connection.prepareStatement("DELETE FROM COMMENTS WHERE id=?");
+
+            //POSTLINKS
+            newPostLinkIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM POSTLINKS");
+            createPostLinkQuery = connection.prepareStatement("INSERT INTO POSTLINKS VALUES(?,?,?,?,?)");
+            readPostLinkQuery = connection.prepareStatement("SELECT * FROM POSTLINKS WHERE id=?");
+            updatePostLinkQuery = connection.prepareStatement("UPDATE POSTLINKS SET creationdate=?, postid=?, relatedpostid=?, linktypeid=? WHERE id=?");
+            deletePostLinkQuery = connection.prepareStatement("DELETE FROM POSTLINKS WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -489,6 +497,71 @@ public class NBPdao {
         try {
             deleteCommentQuery.setInt(1, id);
             deleteCommentQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //POSTLINKS
+    public void createPostLink(PostLinks pl){
+        try {
+            ResultSet rs = newPostLinkIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createPostLinkQuery.setInt(1,id);
+            createPostLinkQuery.setTimestamp(2,pl.getCreationDate());
+            createPostLinkQuery.setInt(3,pl.getPostId());
+            createPostLinkQuery.setInt(4,pl.getRelatedPostId());
+            createPostLinkQuery.setInt(5,pl.getLinkTypeId());
+
+            createPostLinkQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public PostLinks readPostLink(int id) {
+        PostLinks pl = new PostLinks();
+        try {
+            pl.setId(id);
+
+            readPostLinkQuery.setInt(1, pl.getId());
+            ResultSet rs = readPostLinkQuery.executeQuery();
+
+            while(rs.next()) {
+                pl.setCreationDate(rs.getTimestamp(2));
+                pl.setPostId(rs.getInt(3));
+                pl.setRelatedPostId(rs.getInt(4));
+                pl.setLinkTypeId(rs.getInt(5));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(pl.getCreationDate() == null) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pl;
+    }
+
+    public void updatePostLink(PostLinks pl){
+        try {
+            updatePostLinkQuery.setInt(5, pl.getId());
+            updatePostLinkQuery.setTimestamp(1,pl.getCreationDate());
+            updatePostLinkQuery.setInt(2,pl.getPostId());
+            updatePostLinkQuery.setInt(3,pl.getRelatedPostId());
+            updatePostLinkQuery.setInt(4,pl.getLinkTypeId());
+            updatePostLinkQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePostLink(int id) {
+        try {
+            deletePostLinkQuery.setInt(1, id);
+            deletePostLinkQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
