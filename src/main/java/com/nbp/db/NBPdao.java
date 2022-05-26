@@ -10,8 +10,8 @@ public class NBPdao {
     public static NBPdao instance = null;
     public static Connection connection;
 
-    private PreparedStatement addUserQuery, newUserIdQuery, deleteUserQuery,
-            addVoteTypesQuery, newVoteTypesIdQuery, deleteVoteTypeQuery;
+    private PreparedStatement createUserQuery, newUserIdQuery, deleteUserQuery,
+            createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -48,14 +48,16 @@ public class NBPdao {
         try {
             //USERS
             newUserIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM USERS");
-            addUserQuery = connection.prepareStatement("INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            createUserQuery = connection.prepareStatement("INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             deleteUserQuery = connection.prepareStatement("DELETE FROM USERS WHERE id=?");
             //--fali update
 
 
             //VOTETYPES
             newVoteTypesIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM VOTETYPES");
-            addVoteTypesQuery = connection.prepareStatement("INSERT INTO VOTETYPES VALUES(?,?)");
+            createVoteTypesQuery = connection.prepareStatement("INSERT INTO VOTETYPES VALUES(?,?)");
+            readVoteTypeQuery = connection.prepareStatement("SELECT * FROM VOTETYPES WHERE id=?");
+            updateVoteTypeQuery = connection.prepareStatement("UPDATE VOTETYPES SET name=? WHERE id=?");
             deleteVoteTypeQuery = connection.prepareStatement("DELETE FROM VOTETYPES WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,24 +78,24 @@ public class NBPdao {
 
         return 0;
     }
-    public void addUser(Users user){
+    public void createUser(Users user){
         try {
-            addUserQuery.setInt(1,getMaxSizeUsers());
-            addUserQuery.setString(2,user.getAboutMe());
-            addUserQuery.setInt(3,user.getAge());
-            addUserQuery.setTimestamp(4,user.getCreationDate());
-            addUserQuery.setString(5,user.getDisplayName());
-            addUserQuery.setInt(6,user.getDownVotes());
-            addUserQuery.setString(7,user.getEmailHash());
-            addUserQuery.setTimestamp(8,user.getLastAccessDate());
-            addUserQuery.setString(9,user.getLocation());
-            addUserQuery.setInt(10,user.getReputation());
-            addUserQuery.setInt(11,user.getUpVotes());
-            addUserQuery.setInt(12,user.getViews());
-            addUserQuery.setString(13,user.getWebsiteURL());
-            addUserQuery.setInt(14,user.getAccountId());
+            createUserQuery.setInt(1,getMaxSizeUsers());
+            createUserQuery.setString(2,user.getAboutMe());
+            createUserQuery.setInt(3,user.getAge());
+            createUserQuery.setTimestamp(4,user.getCreationDate());
+            createUserQuery.setString(5,user.getDisplayName());
+            createUserQuery.setInt(6,user.getDownVotes());
+            createUserQuery.setString(7,user.getEmailHash());
+            createUserQuery.setTimestamp(8,user.getLastAccessDate());
+            createUserQuery.setString(9,user.getLocation());
+            createUserQuery.setInt(10,user.getReputation());
+            createUserQuery.setInt(11,user.getUpVotes());
+            createUserQuery.setInt(12,user.getViews());
+            createUserQuery.setString(13,user.getWebsiteURL());
+            createUserQuery.setInt(14,user.getAccountId());
 
-            addUserQuery.executeUpdate();
+            createUserQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -109,16 +111,44 @@ public class NBPdao {
     }
 
     //VOTETYPES
-    public void addVoteType(VoteTypes vt){
+    public void createVoteType(VoteTypes vt){
         try {
             ResultSet rs = newVoteTypesIdQuery.executeQuery();
             int id = 1;
             if(rs.next()) id = rs.getInt(1);
 
-            addVoteTypesQuery.setInt(1,id);
-            addVoteTypesQuery.setString(2,vt.getName());
+            createVoteTypesQuery.setInt(1,id);
+            createVoteTypesQuery.setString(2,vt.getName());
 
-            addVoteTypesQuery.executeUpdate();
+            createVoteTypesQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public VoteTypes readVoteType(int id) {
+        VoteTypes vt = new VoteTypes("");
+        try {
+            vt.setId(id);
+
+            readVoteTypeQuery.setInt(1, vt.getId());
+            ResultSet rs = readVoteTypeQuery.executeQuery();
+
+            while(rs.next()) {
+                vt.setName(rs.getString(2));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vt;
+    }
+
+    public void updateVoteType(VoteTypes vt){
+        try {
+            updateVoteTypeQuery.setInt(2, vt.getId());
+            updateVoteTypeQuery.setString(1, vt.getName());
+            updateVoteTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -24,7 +24,7 @@ public class NbpApplication {
 
         newUser.setId(nbpdao.getMaxSizeUsers());
 
-        nbpdao.addUser(newUser);
+        nbpdao.createUser(newUser);
 
         System.out.println(newUser.getId());
         System.out.println(newUser.getCreationDate());*/

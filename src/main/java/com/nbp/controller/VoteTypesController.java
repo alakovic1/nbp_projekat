@@ -11,14 +11,29 @@ import org.springframework.web.bind.annotation.*;
 public class VoteTypesController {
     private NBPdao nbpDao = new NBPdao();
 
-    @PostMapping("/addVoteType")
-    private ResponseMessage addUser(@RequestBody VoteTypes vt){
+    @PostMapping("/createVoteType")
+    private ResponseMessage addVoteType(@RequestBody VoteTypes vt){
         try {
-            nbpDao.addVoteType(vt);
+            nbpDao.createVoteType(vt);
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-        return new ResponseMessage(true, HttpStatus.OK, "VoteType added successfully!!");
+        return new ResponseMessage(true, HttpStatus.OK, "VoteType created and added successfully!!");
+    }
+
+    @GetMapping("/readVoteType/{id}")
+    private VoteTypes readVoteTypeById(@PathVariable int id){
+        return nbpDao.readVoteType(id);
+    }
+
+    @PostMapping("/updateVoteType")
+    private ResponseMessage updateVoteType(@RequestBody VoteTypes vt){
+        try {
+            nbpDao.updateVoteType(vt);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return new ResponseMessage(true, HttpStatus.OK, "VoteType updated successfully!!");
     }
 
     @GetMapping("/deleteVoteType/{id}")
