@@ -9,7 +9,7 @@
 - Amila Laković
 - Amila Hrustić
 - Samra Mujčinović
-- EmirPita
+- Emir Pita
 
 <a href="https://github.com/alakovic1" target="_blank"><img width="100px" height="100px" src="https://github.com/alakovic1.png"></a>
 <a href="https://github.com/ahrustic" target="_blank"><img width="100px" height="100px" src="https://github.com/ahrustic.png"></a>
