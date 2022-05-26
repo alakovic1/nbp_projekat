@@ -16,7 +16,8 @@ public class NBPdao {
             newLinkTypesIdQuery, createLinkTypesQuery, readLinkTypeQuery, updateLinkTypeQuery, deleteLinkTypeQuery,
             newCommentIdQuery, createCommentsQuery, readCommentQuery, updateCommentQuery, deleteCommentQuery,
             newPostLinkIdQuery, createPostLinkQuery, readPostLinkQuery, updatePostLinkQuery, deletePostLinkQuery,
-            newVoteIdQuery, createVoteQuery, readVoteQuery, updateVoteQuery, deleteVoteQuery;
+            newVoteIdQuery, createVoteQuery, readVoteQuery, updateVoteQuery, deleteVoteQuery,
+            newPostIdQuery, createPostQuery, readPostQuery, updatePostQuery, deletePostQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -106,6 +107,13 @@ public class NBPdao {
             readVoteQuery = connection.prepareStatement("SELECT * FROM VOTES WHERE id=?");
             updateVoteQuery = connection.prepareStatement("UPDATE VOTES SET postid=?, userid=?, bountyamount=?, votetypeid=?, creationdate=? WHERE id=?");
             deleteVoteQuery = connection.prepareStatement("DELETE FROM VOTES WHERE id=?");
+
+            //POSTS
+            newPostIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM POSTS");
+            createPostQuery = connection.prepareStatement("INSERT INTO POSTS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            readPostQuery = connection.prepareStatement("SELECT * FROM POSTS WHERE id=?");
+            updatePostQuery = connection.prepareStatement("UPDATE POSTS SET acceptedanswerid=?, answercount=?, body=?, closeddate=?, commentcount=?, communityowneddate=?, creationdate=?, favoritecount=?, lastactivitydate=?, lasteditdate=?, lasteditordisplayname=?, lasteditoruserid=?, owneruserid=?, parentid=?, posttypeid=?, score=?, tags=?, title=?, viewcount=? WHERE id=?");
+            deletePostQuery = connection.prepareStatement("DELETE FROM POSTS WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -638,6 +646,116 @@ public class NBPdao {
         try {
             deleteVoteQuery.setInt(1, id);
             deleteVoteQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //POSTS
+    public void createPost(Posts post){
+        try {
+            ResultSet rs = newPostIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createPostQuery.setInt(1,id);
+            createPostQuery.setInt(2,post.getAcceptedAnswerId());
+            createPostQuery.setInt(3,post.getAnswerCount());
+            createPostQuery.setString(4,post.getBody());
+            createPostQuery.setTimestamp(5,post.getClosedDate());
+            createPostQuery.setInt(6,post.getCommentCount());
+            createPostQuery.setTimestamp(7,post.getCommunityOwnedDate());
+            createPostQuery.setTimestamp(8,post.getCreationDate());
+            createPostQuery.setInt(9,post.getFavoriteCount());
+            createPostQuery.setTimestamp(10,post.getLastActivityDate());
+            createPostQuery.setTimestamp(11,post.getLastEditDate());
+            createPostQuery.setString(12,post.getLastEditorDisplayName());
+            createPostQuery.setInt(13,post.getLastEditorUserId());
+            createPostQuery.setInt(14,post.getOwnerUserId());
+            createPostQuery.setInt(15,post.getParentId());
+            createPostQuery.setInt(16,post.getPostTypeId());
+            createPostQuery.setInt(17,post.getScore());
+            createPostQuery.setString(18,post.getTags());
+            createPostQuery.setString(19,post.getTitle());
+            createPostQuery.setInt(20,post.getViewCount());
+
+            createPostQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Posts readPost(int id) {
+        Posts post = new Posts();
+        try {
+            post.setId(id);
+
+            readPostQuery.setInt(1, post.getId());
+            ResultSet rs = readPostQuery.executeQuery();
+
+            while(rs.next()) {
+                post.setAcceptedAnswerId(rs.getInt(2));
+                post.setAnswerCount(rs.getInt(3));
+                post.setBody(rs.getString(4));
+                post.setClosedDate(rs.getTimestamp(5));
+                post.setCommentCount(rs.getInt(6));
+                post.setCommunityOwnedDate(rs.getTimestamp(7));
+                post.setCreationDate(rs.getTimestamp(8));
+                post.setFavoriteCount(rs.getInt(9));
+                post.setLastActivityDate(rs.getTimestamp(10));
+                post.setLastEditDate(rs.getTimestamp(11));
+                post.setLastEditorDisplayName(rs.getString(12));
+                post.setLastEditorUserId(rs.getInt(13));
+                post.setOwnerUserId(rs.getInt(14));
+                post.setParentId(rs.getInt(15));
+                post.setPostTypeId(rs.getInt(16));
+                post.setScore(rs.getInt(17));
+                post.setTags(rs.getString(18));
+                post.setTitle(rs.getString(19));
+                post.setViewCount(rs.getInt(20));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(post.getCreationDate() == null) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
+
+    public void updatePost(Posts post){
+        try {
+            updatePostQuery.setInt(20, post.getId());
+            updatePostQuery.setInt(1,post.getAcceptedAnswerId());
+            updatePostQuery.setInt(2,post.getAnswerCount());
+            updatePostQuery.setString(3,post.getBody());
+            updatePostQuery.setTimestamp(4,post.getClosedDate());
+            updatePostQuery.setInt(5,post.getCommentCount());
+            updatePostQuery.setTimestamp(6,post.getCommunityOwnedDate());
+            updatePostQuery.setTimestamp(7,post.getCreationDate());
+            updatePostQuery.setInt(8,post.getFavoriteCount());
+            updatePostQuery.setTimestamp(9,post.getLastActivityDate());
+            updatePostQuery.setTimestamp(10,post.getLastEditDate());
+            updatePostQuery.setString(11,post.getLastEditorDisplayName());
+            updatePostQuery.setInt(12,post.getLastEditorUserId());
+            updatePostQuery.setInt(13,post.getOwnerUserId());
+            updatePostQuery.setInt(14,post.getParentId());
+            updatePostQuery.setInt(15,post.getPostTypeId());
+            updatePostQuery.setInt(16,post.getScore());
+            updatePostQuery.setString(17,post.getTags());
+            updatePostQuery.setString(18,post.getTitle());
+            updatePostQuery.setInt(19,post.getViewCount());
+            updatePostQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePost(int id) {
+        try {
+            deletePostQuery.setInt(1, id);
+            deletePostQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
