@@ -13,7 +13,8 @@ public class NBPdao {
             createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery,
             newBadgeIdQuery, createBadgeQuery, readBadgeQuery, updateBadgesQuery, deleteBadgeQuery,
             newPostTypesIdQuery, createPostTypesQuery, readPostTypeQuery, updatePostTypeQuery, deletePostTypeQuery,
-            newLinkTypesIdQuery, createLinkTypesQuery, readLinkTypeQuery, updateLinkTypeQuery, deleteLinkTypeQuery;
+            newLinkTypesIdQuery, createLinkTypesQuery, readLinkTypeQuery, updateLinkTypeQuery, deleteLinkTypeQuery,
+            newCommentIdQuery, createCommentsQuery, readCommentQuery, updateCommentQuery, deleteCommentQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -82,6 +83,13 @@ public class NBPdao {
             readLinkTypeQuery = connection.prepareStatement("SELECT * FROM LINKTYPES WHERE id=?");
             updateLinkTypeQuery = connection.prepareStatement("UPDATE LINKTYPES SET type=? WHERE id=?");
             deleteLinkTypeQuery = connection.prepareStatement("DELETE FROM LINKTYPES WHERE id=?");
+
+            //COMMENTS
+            newCommentIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM COMMENTS");
+            createCommentsQuery = connection.prepareStatement("INSERT INTO COMMENTS VALUES(?,?,?,?,?,?)");
+            readCommentQuery = connection.prepareStatement("SELECT * FROM COMMENTS WHERE id=?");
+            updateCommentQuery = connection.prepareStatement("UPDATE COMMENTS SET creationdate=?, postid=?, score=?, text=?, userid=? WHERE id=?");
+            deleteCommentQuery = connection.prepareStatement("DELETE FROM COMMENTS WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -413,6 +421,74 @@ public class NBPdao {
         try {
             deleteLinkTypeQuery.setInt(1, id);
             deleteLinkTypeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //COMMENTS
+    public void createComment(Comments comments){
+        try {
+            ResultSet rs = newCommentIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createCommentsQuery.setInt(1,id);
+            createCommentsQuery.setTimestamp(2,comments.getCreationDate());
+            createCommentsQuery.setInt(3,comments.getPostId());
+            createCommentsQuery.setInt(4,comments.getScore());
+            createCommentsQuery.setString(5,comments.getText());
+            createCommentsQuery.setInt(6,comments.getUserId());
+
+            createCommentsQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Comments readComment(int id) {
+        Comments comment = new Comments();
+        try {
+            comment.setId(id);
+
+            readCommentQuery.setInt(1, comment.getId());
+            ResultSet rs = readCommentQuery.executeQuery();
+
+            while(rs.next()) {
+                comment.setCreationDate(rs.getTimestamp(2));
+                comment.setPostId(rs.getInt(3));
+                comment.setScore(rs.getInt(4));
+                comment.setText(rs.getString(5));
+                comment.setUserId(rs.getInt(6));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(comment.getCreationDate() == null) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return comment;
+    }
+
+    public void updateComment(Comments comment){
+        try {
+            updateCommentQuery.setInt(6, comment.getId());
+            updateCommentQuery.setTimestamp(1,comment.getCreationDate());
+            updateCommentQuery.setInt(2,comment.getPostId());
+            updateCommentQuery.setInt(3,comment.getScore());
+            updateCommentQuery.setString(4,comment.getText());
+            updateCommentQuery.setInt(5,comment.getUserId());
+            updateCommentQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteComment(int id) {
+        try {
+            deleteCommentQuery.setInt(1, id);
+            deleteCommentQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
