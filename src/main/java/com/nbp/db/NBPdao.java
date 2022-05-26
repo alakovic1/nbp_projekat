@@ -15,7 +15,8 @@ public class NBPdao {
             newPostTypesIdQuery, createPostTypesQuery, readPostTypeQuery, updatePostTypeQuery, deletePostTypeQuery,
             newLinkTypesIdQuery, createLinkTypesQuery, readLinkTypeQuery, updateLinkTypeQuery, deleteLinkTypeQuery,
             newCommentIdQuery, createCommentsQuery, readCommentQuery, updateCommentQuery, deleteCommentQuery,
-            newPostLinkIdQuery, createPostLinkQuery, readPostLinkQuery, updatePostLinkQuery, deletePostLinkQuery;
+            newPostLinkIdQuery, createPostLinkQuery, readPostLinkQuery, updatePostLinkQuery, deletePostLinkQuery,
+            newVoteIdQuery, createVoteQuery, readVoteQuery, updateVoteQuery, deleteVoteQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -98,6 +99,13 @@ public class NBPdao {
             readPostLinkQuery = connection.prepareStatement("SELECT * FROM POSTLINKS WHERE id=?");
             updatePostLinkQuery = connection.prepareStatement("UPDATE POSTLINKS SET creationdate=?, postid=?, relatedpostid=?, linktypeid=? WHERE id=?");
             deletePostLinkQuery = connection.prepareStatement("DELETE FROM POSTLINKS WHERE id=?");
+
+            //VOTES
+            newVoteIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM VOTES");
+            createVoteQuery = connection.prepareStatement("INSERT INTO VOTES VALUES(?,?,?,?,?,?)");
+            readVoteQuery = connection.prepareStatement("SELECT * FROM VOTES WHERE id=?");
+            updateVoteQuery = connection.prepareStatement("UPDATE VOTES SET postid=?, userid=?, bountyamount=?, votetypeid=?, creationdate=? WHERE id=?");
+            deleteVoteQuery = connection.prepareStatement("DELETE FROM VOTES WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -562,6 +570,74 @@ public class NBPdao {
         try {
             deletePostLinkQuery.setInt(1, id);
             deletePostLinkQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //VOTES
+    public void createVote(Votes vote){
+        try {
+            ResultSet rs = newVoteIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createVoteQuery.setInt(1,id);
+            createVoteQuery.setInt(2,vote.getPostId());
+            createVoteQuery.setInt(3,vote.getUserId());
+            createVoteQuery.setInt(4,vote.getBountyAmount());
+            createVoteQuery.setInt(5,vote.getVoteTypeId());
+            createVoteQuery.setTimestamp(6,vote.getCreationDate());
+
+            createVoteQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Votes readVote(int id) {
+        Votes vote = new Votes();
+        try {
+            vote.setId(id);
+
+            readVoteQuery.setInt(1, vote.getId());
+            ResultSet rs = readVoteQuery.executeQuery();
+
+            while(rs.next()) {
+                vote.setPostId(rs.getInt(2));
+                vote.setUserId(rs.getInt(3));
+                vote.setBountyAmount(rs.getInt(4));
+                vote.setVoteTypeId(rs.getInt(5));
+                vote.setCreationDate(rs.getTimestamp(6));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(vote.getCreationDate() == null) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vote;
+    }
+
+    public void updateVote(Votes vote){
+        try {
+            updateVoteQuery.setInt(6, vote.getId());
+            updateVoteQuery.setInt(1,vote.getPostId());
+            updateVoteQuery.setInt(2,vote.getUserId());
+            updateVoteQuery.setInt(3,vote.getBountyAmount());
+            updateVoteQuery.setInt(4,vote.getVoteTypeId());
+            updateVoteQuery.setTimestamp(5,vote.getCreationDate());
+            updateVoteQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteVote(int id) {
+        try {
+            deleteVoteQuery.setInt(1, id);
+            deleteVoteQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
