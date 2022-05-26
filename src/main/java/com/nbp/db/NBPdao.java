@@ -10,7 +10,7 @@ public class NBPdao {
     public static NBPdao instance = null;
     public static Connection connection;
 
-    private PreparedStatement createUserQuery, newUserIdQuery, deleteUserQuery,
+    private PreparedStatement createUserQuery, newUserIdQuery, readUserQuery, updateUserQuery, deleteUserQuery,
             createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery;
 
     public static void initialize() {
@@ -49,6 +49,8 @@ public class NBPdao {
             //USERS
             newUserIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM USERS");
             createUserQuery = connection.prepareStatement("INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            readUserQuery = connection.prepareStatement("SELECT * FROM USERS WHERE id=?");
+            updateUserQuery = connection.prepareStatement("UPDATE USERS SET aboutme=?, age=?, creationdate=?, displayname=?, downvotes=?, emailhash=?, lastaccessdate=?, location=?, reputation=?, upvotes=?, views=?, websiteurl=?, accountid=? WHERE id=?");
             deleteUserQuery = connection.prepareStatement("DELETE FROM USERS WHERE id=?");
             //--fali update
 
@@ -101,9 +103,64 @@ public class NBPdao {
         }
     }
 
-    public void deleteUser(Users user) {
+    public Users readUser(int id) {
+        Users user = new Users();
         try {
-            deleteUserQuery.setInt(1, user.getId());
+            user.setId(id);
+
+            readUserQuery.setInt(1, user.getId());
+            ResultSet rs = readUserQuery.executeQuery();
+
+            while(rs.next()) {
+                user.setAboutMe(rs.getString(2));
+                user.setAge(rs.getInt(3));
+                user.setCreationDate(rs.getTimestamp(4));
+                user.setDisplayName(rs.getString(5));
+                user.setDownVotes(rs.getInt(6));
+                user.setEmailHash(rs.getString(7));
+                user.setLastAccessDate(rs.getTimestamp(8));
+                user.setLocation(rs.getString(9));
+                user.setReputation(rs.getInt(10));
+                user.setUpVotes(rs.getInt(11));
+                user.setViews(rs.getInt(12));
+                user.setWebsiteURL(rs.getString(13));
+                user.setAccountId(rs.getInt(14));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(user.getCreationDate() == null) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public void updateUser(Users user){
+        try {
+            updateUserQuery.setInt(14, user.getId());
+            updateUserQuery.setString(1,user.getAboutMe());
+            updateUserQuery.setInt(2,user.getAge());
+            updateUserQuery.setTimestamp(3,user.getCreationDate());
+            updateUserQuery.setString(4,user.getDisplayName());
+            updateUserQuery.setInt(5,user.getDownVotes());
+            updateUserQuery.setString(6,user.getEmailHash());
+            updateUserQuery.setTimestamp(7,user.getLastAccessDate());
+            updateUserQuery.setString(8,user.getLocation());
+            updateUserQuery.setInt(9,user.getReputation());
+            updateUserQuery.setInt(10,user.getUpVotes());
+            updateUserQuery.setInt(11,user.getViews());
+            updateUserQuery.setString(12,user.getWebsiteURL());
+            updateUserQuery.setInt(13,user.getAccountId());
+            updateUserQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(int id) {
+        try {
+            deleteUserQuery.setInt(1, id);
             deleteUserQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
