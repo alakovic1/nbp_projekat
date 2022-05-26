@@ -1,9 +1,6 @@
 package com.nbp.db;
 
-import com.nbp.model.Badges;
-import com.nbp.model.PostTypes;
-import com.nbp.model.Users;
-import com.nbp.model.VoteTypes;
+import com.nbp.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +12,8 @@ public class NBPdao {
     private PreparedStatement createUserQuery, newUserIdQuery, readUserQuery, updateUserQuery, deleteUserQuery,
             createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery,
             newBadgeIdQuery, createBadgeQuery, readBadgeQuery, updateBadgesQuery, deleteBadgeQuery,
-            newPostTypesIdQuery, createPostTypesQuery, readPostTypeQuery, updatePostTypeQuery, deletePostTypeQuery;
+            newPostTypesIdQuery, createPostTypesQuery, readPostTypeQuery, updatePostTypeQuery, deletePostTypeQuery,
+            newLinkTypesIdQuery, createLinkTypesQuery, readLinkTypeQuery, updateLinkTypeQuery, deleteLinkTypeQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -77,6 +75,13 @@ public class NBPdao {
             readPostTypeQuery = connection.prepareStatement("SELECT * FROM POSTTYPES WHERE id=?");
             updatePostTypeQuery = connection.prepareStatement("UPDATE POSTTYPES SET type=? WHERE id=?");
             deletePostTypeQuery = connection.prepareStatement("DELETE FROM POSTTYPES WHERE id=?");
+
+            //LINKTYPES
+            newLinkTypesIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM LINKTYPES");
+            createLinkTypesQuery = connection.prepareStatement("INSERT INTO LINKTYPES VALUES(?,?)");
+            readLinkTypeQuery = connection.prepareStatement("SELECT * FROM LINKTYPES WHERE id=?");
+            updateLinkTypeQuery = connection.prepareStatement("UPDATE LINKTYPES SET type=? WHERE id=?");
+            deleteLinkTypeQuery = connection.prepareStatement("DELETE FROM LINKTYPES WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -352,6 +357,62 @@ public class NBPdao {
         try {
             deletePostTypeQuery.setInt(1, id);
             deletePostTypeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //LINKTYPES
+    public void createLinkType(LinkTypes lt){
+        try {
+            ResultSet rs = newLinkTypesIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createLinkTypesQuery.setInt(1,id);
+            createLinkTypesQuery.setString(2,lt.getType());
+
+            createLinkTypesQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public LinkTypes readLinkType(int id) {
+        LinkTypes lt = new LinkTypes("");
+        try {
+            lt.setId(id);
+
+            readLinkTypeQuery.setInt(1, lt.getId());
+            ResultSet rs = readLinkTypeQuery.executeQuery();
+
+            while(rs.next()) {
+                lt.setType(rs.getString(2));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(lt.getType().equals("")) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lt;
+    }
+
+    public void updateLinkType(LinkTypes lt){
+        try {
+            updateLinkTypeQuery.setInt(2, lt.getId());
+            updateLinkTypeQuery.setString(1, lt.getType());
+            updateLinkTypeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteLinkType(int id) {
+        try {
+            deleteLinkTypeQuery.setInt(1, id);
+            deleteLinkTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
