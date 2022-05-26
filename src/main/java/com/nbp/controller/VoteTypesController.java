@@ -12,7 +12,7 @@ public class VoteTypesController {
     private NBPdao nbpDao = new NBPdao();
 
     @PostMapping("/createVoteType")
-    private ResponseMessage addVoteType(@RequestBody VoteTypes vt){
+    private ResponseMessage createVoteType(@RequestBody VoteTypes vt){
         try {
             nbpDao.createVoteType(vt);
         } catch (Exception e){

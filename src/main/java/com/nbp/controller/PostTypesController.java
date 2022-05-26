@@ -12,7 +12,7 @@ public class PostTypesController {
     private NBPdao nbpDao = new NBPdao();
 
     @PostMapping("/createPostType")
-    private ResponseMessage addPostType(@RequestBody PostTypes pt){
+    private ResponseMessage createPostType(@RequestBody PostTypes pt){
         try {
             nbpDao.createPostType(pt);
         } catch (Exception e){
