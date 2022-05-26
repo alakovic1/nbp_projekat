@@ -138,6 +138,9 @@ public class NBPdao {
                 vt.setName(rs.getString(2));
             }
 
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(vt.getName().equals("")) return null;
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
