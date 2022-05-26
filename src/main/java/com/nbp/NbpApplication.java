@@ -5,8 +5,9 @@ import com.nbp.model.Users;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 
 @SpringBootApplication
 public class NbpApplication {
@@ -15,14 +16,18 @@ public class NbpApplication {
         SpringApplication.run(NbpApplication.class, args);
 
         /*NBPdao nbpdao = new NBPdao();
-        Users newUser = new Users("", 113, new Date(Calendar.getInstance().getTime().getTime()),
-                "TestDisplayName", 4, "", new Date(Calendar.getInstance().getTime().getTime()),
+        Date date = new Date();
+        Users newUser = new Users("", 113, new Timestamp(date.getTime()),
+                "TestDisplayName", 4, "", new Timestamp(date.getTime()),
                 "TestLocation", 1, 4, 6, "", 1);
         System.out.println(nbpdao.getMaxSizeUsers());
 
-        newUser.setId(nbpdao.getMaxSizeUsers() - 1);
+        newUser.setId(nbpdao.getMaxSizeUsers());
 
-        nbpdao.deleteUser(newUser);*/
+        nbpdao.addUser(newUser);
+
+        System.out.println(newUser.getId());
+        System.out.println(newUser.getCreationDate());*/
 
     }
 

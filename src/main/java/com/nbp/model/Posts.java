@@ -1,19 +1,19 @@
 package com.nbp.model;
 
-import java.sql.Date;
+import java.sql.*;
 
 public class Posts {
     private int id;
     private int acceptedAnswerId;
     private int answerCount;
     private String body;
-    private Date closedDate;
+    private Timestamp closedDate;
     private int commentCount;
-    private Date communityOwnedDate;
-    private Date creationDate;
+    private Timestamp communityOwnedDate;
+    private Timestamp creationDate;
     private int favoriteCount;
-    private Date lastActivityDate;
-    private Date lastEditDate;
+    private Timestamp lastActivityDate;
+    private Timestamp lastEditDate;
     private String lastEditorDisplayName;
     private int lastEditorUserId;
     private int ownerUserId;
@@ -24,9 +24,9 @@ public class Posts {
     private String title;
     private int viewCount;
 
-    public Posts(int id, int acceptedAnswerId, int answerCount, String body, Date closedDate,
-                 int commentCount, Date communityOwnedDate, Date creationDate, int favoriteCount,
-                 Date lastActivityDate, Date lastEditDate, String lastEditorDisplayName,
+    public Posts(int id, int acceptedAnswerId, int answerCount, String body, Timestamp closedDate,
+                 int commentCount, Timestamp communityOwnedDate, Timestamp creationDate, int favoriteCount,
+                 Timestamp lastActivityDate, Timestamp lastEditDate, String lastEditorDisplayName,
                  int lastEditorUserId, int ownerUserId, int parentId, int postTypeId, int score,
                  String tags, String title, int viewCount) {
         this.id = id;
@@ -51,9 +51,9 @@ public class Posts {
         this.viewCount = viewCount;
     }
 
-    public Posts(int acceptedAnswerId, int answerCount, String body, Date closedDate, int commentCount,
-                 Date communityOwnedDate, Date creationDate, int favoriteCount, Date lastActivityDate,
-                 Date lastEditDate, String lastEditorDisplayName, int lastEditorUserId, int ownerUserId,
+    public Posts(int acceptedAnswerId, int answerCount, String body, Timestamp closedDate, int commentCount,
+                 Timestamp communityOwnedDate, Timestamp creationDate, int favoriteCount, Timestamp lastActivityDate,
+                 Timestamp lastEditDate, String lastEditorDisplayName, int lastEditorUserId, int ownerUserId,
                  int parentId, int postTypeId, int score, String tags, String title, int viewCount) {
         this.acceptedAnswerId = acceptedAnswerId;
         this.answerCount = answerCount;
@@ -108,11 +108,11 @@ public class Posts {
         this.body = body;
     }
 
-    public Date getClosedDate() {
+    public Timestamp getClosedDate() {
         return closedDate;
     }
 
-    public void setClosedDate(Date closedDate) {
+    public void setClosedDate(Timestamp closedDate) {
         this.closedDate = closedDate;
     }
 
@@ -124,19 +124,19 @@ public class Posts {
         this.commentCount = commentCount;
     }
 
-    public Date getCommunityOwnedDate() {
+    public Timestamp getCommunityOwnedDate() {
         return communityOwnedDate;
     }
 
-    public void setCommunityOwnedDate(Date communityOwnedDate) {
+    public void setCommunityOwnedDate(Timestamp communityOwnedDate) {
         this.communityOwnedDate = communityOwnedDate;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -148,19 +148,19 @@ public class Posts {
         this.favoriteCount = favoriteCount;
     }
 
-    public Date getLastActivityDate() {
+    public Timestamp getLastActivityDate() {
         return lastActivityDate;
     }
 
-    public void setLastActivityDate(Date lastActivityDate) {
+    public void setLastActivityDate(Timestamp lastActivityDate) {
         this.lastActivityDate = lastActivityDate;
     }
 
-    public Date getLastEditDate() {
+    public Timestamp getLastEditDate() {
         return lastEditDate;
     }
 
-    public void setLastEditDate(Date lastEditDate) {
+    public void setLastEditDate(Timestamp lastEditDate) {
         this.lastEditDate = lastEditDate;
     }
 

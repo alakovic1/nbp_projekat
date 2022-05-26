@@ -1,15 +1,15 @@
 package com.nbp.model;
 
-import java.sql.Date;
+import java.sql.*;
 
 public class PostLinks {
     private int id;
-    private Date creationDate;
+    private Timestamp creationDate;
     private int postId;
     private int relatedPostId;
     private int linkTypeId;
 
-    public PostLinks(int id, Date creationDate, int postId, int relatedPostId, int linkTypeId) {
+    public PostLinks(int id, Timestamp creationDate, int postId, int relatedPostId, int linkTypeId) {
         this.id = id;
         this.creationDate = creationDate;
         this.postId = postId;
@@ -17,7 +17,7 @@ public class PostLinks {
         this.linkTypeId = linkTypeId;
     }
 
-    public PostLinks(Date creationDate, int postId, int relatedPostId, int linkTypeId) {
+    public PostLinks(Timestamp creationDate, int postId, int relatedPostId, int linkTypeId) {
         this.creationDate = creationDate;
         this.postId = postId;
         this.relatedPostId = relatedPostId;
@@ -32,11 +32,11 @@ public class PostLinks {
         this.id = id;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 

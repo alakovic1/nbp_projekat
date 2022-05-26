@@ -1,16 +1,16 @@
 package com.nbp.model;
 
-import java.sql.Date;
+import java.sql.*;
 
 public class Users {
     private int id;
     private String aboutMe;
     private int age;
-    private Date creationDate;
+    private Timestamp creationDate;
     private String displayName;
     private int downVotes;
     private String emailHash;
-    private Date lastAccessDate;
+    private Timestamp lastAccessDate;
     private String location;
     private int reputation;
     private int upVotes;
@@ -18,8 +18,8 @@ public class Users {
     private String websiteURL;
     private int accountId;
 
-    public Users(int id, String aboutMe, int age, Date creationDate, String displayName,
-                 int downVotes, String emailHash, Date lastAccessDate, String location, int reputation,
+    public Users(int id, String aboutMe, int age, Timestamp creationDate, String displayName,
+                 int downVotes, String emailHash, Timestamp lastAccessDate, String location, int reputation,
                  int upVotes, int views, String websiteURL, int accountId) {
         this.id = id;
         this.aboutMe = aboutMe;
@@ -37,8 +37,8 @@ public class Users {
         this.accountId = accountId;
     }
 
-    public Users(String aboutMe, int age, Date creationDate, String displayName,
-                 int downVotes, String emailHash, Date lastAccessDate, String location,
+    public Users(String aboutMe, int age, Timestamp creationDate, String displayName,
+                 int downVotes, String emailHash, Timestamp lastAccessDate, String location,
                  int reputation, int upVotes, int views, String websiteURL, int accountId) {
         this.aboutMe = aboutMe;
         this.age = age;
@@ -79,11 +79,11 @@ public class Users {
         this.age = age;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -111,11 +111,11 @@ public class Users {
         this.emailHash = emailHash;
     }
 
-    public Date getLastAccessDate() {
+    public Timestamp getLastAccessDate() {
         return lastAccessDate;
     }
 
-    public void setLastAccessDate(Date lastAccessDate) {
+    public void setLastAccessDate(Timestamp lastAccessDate) {
         this.lastAccessDate = lastAccessDate;
     }
 

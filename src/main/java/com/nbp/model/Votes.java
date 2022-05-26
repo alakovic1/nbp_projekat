@@ -1,6 +1,6 @@
 package com.nbp.model;
 
-import java.sql.Date;
+import java.sql.*;
 
 public class Votes {
     private int id;
@@ -8,9 +8,9 @@ public class Votes {
     private int userId;
     private int bountyAmount;
     private int voteTypeId;
-    private Date creationDate;
+    private Timestamp creationDate;
 
-    public Votes(int id, int postId, int userId, int bountyAmount, int voteTypeId, Date creationDate) {
+    public Votes(int id, int postId, int userId, int bountyAmount, int voteTypeId, Timestamp creationDate) {
         this.id = id;
         this.postId = postId;
         this.userId = userId;
@@ -19,7 +19,7 @@ public class Votes {
         this.creationDate = creationDate;
     }
 
-    public Votes(int postId, int userId, int bountyAmount, int voteTypeId, Date creationDate) {
+    public Votes(int postId, int userId, int bountyAmount, int voteTypeId, Timestamp creationDate) {
         this.postId = postId;
         this.userId = userId;
         this.bountyAmount = bountyAmount;
@@ -67,11 +67,11 @@ public class Votes {
         this.voteTypeId = voteTypeId;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 }

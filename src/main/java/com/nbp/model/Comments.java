@@ -1,17 +1,17 @@
 package com.nbp.model;
 
 
-import java.sql.Date;
+import java.sql.*;
 
 public class Comments {
     private int id;
-    private Date creationDate;
+    private Timestamp creationDate;
     private int postId;
     private int score;
     private String text;
     private int userId;
 
-    public Comments(int id, Date creationDate, int postId, int score, String text, int userId) {
+    public Comments(int id, Timestamp creationDate, int postId, int score, String text, int userId) {
         this.id = id;
         this.creationDate = creationDate;
         this.postId = postId;
@@ -20,7 +20,7 @@ public class Comments {
         this.userId = userId;
     }
 
-    public Comments(Date creationDate, int postId, int score, String text, int userId) {
+    public Comments(Timestamp creationDate, int postId, int score, String text, int userId) {
         this.creationDate = creationDate;
         this.postId = postId;
         this.score = score;
@@ -36,11 +36,11 @@ public class Comments {
         this.id = id;
     }
 
-    public Date getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 

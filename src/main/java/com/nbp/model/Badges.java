@@ -1,21 +1,21 @@
 package com.nbp.model;
 
-import java.sql.Date;
+import java.sql.*;
 
 public class Badges {
     private int id;
     private String name;
     private int userId;
-    private Date dates;
+    private Timestamp dates;
 
-    public Badges(int id, String name, int userId, Date dates) {
+    public Badges(int id, String name, int userId, Timestamp dates) {
         this.id = id;
         this.name = name;
         this.userId = userId;
         this.dates = dates;
     }
 
-    public Badges(String name, int userId, Date dates) {
+    public Badges(String name, int userId, Timestamp dates) {
         this.name = name;
         this.userId = userId;
         this.dates = dates;
@@ -45,11 +45,11 @@ public class Badges {
         this.userId = userId;
     }
 
-    public Date getDates() {
+    public Timestamp getDates() {
         return dates;
     }
 
-    public void setDates(Date dates) {
+    public void setDates(Timestamp dates) {
         this.dates = dates;
     }
 }

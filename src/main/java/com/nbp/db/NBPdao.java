@@ -81,11 +81,11 @@ public class NBPdao {
             addUserQuery.setInt(1,getMaxSizeUsers());
             addUserQuery.setString(2,user.getAboutMe());
             addUserQuery.setInt(3,user.getAge());
-            addUserQuery.setDate(4,user.getCreationDate());
+            addUserQuery.setTimestamp(4,user.getCreationDate());
             addUserQuery.setString(5,user.getDisplayName());
             addUserQuery.setInt(6,user.getDownVotes());
             addUserQuery.setString(7,user.getEmailHash());
-            addUserQuery.setDate(8,user.getLastAccessDate());
+            addUserQuery.setTimestamp(8,user.getLastAccessDate());
             addUserQuery.setString(9,user.getLocation());
             addUserQuery.setInt(10,user.getReputation());
             addUserQuery.setInt(11,user.getUpVotes());
