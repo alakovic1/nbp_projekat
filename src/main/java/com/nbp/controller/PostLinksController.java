@@ -1,4 +1,4 @@
-package com.nbp;
+package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
 import com.nbp.model.Comments;
