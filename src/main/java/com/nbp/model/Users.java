@@ -18,6 +18,9 @@ public class Users {
     private String websiteURL;
     private int accountId;
 
+    public Users() {
+    }
+
     public Users(int id, String aboutMe, int age, Timestamp creationDate, String displayName,
                  int downVotes, String emailHash, Timestamp lastAccessDate, String location, int reputation,
                  int upVotes, int views, String websiteURL, int accountId) {
@@ -47,6 +50,21 @@ public class Users {
         this.downVotes = downVotes;
         this.emailHash = emailHash;
         this.lastAccessDate = lastAccessDate;
+        this.location = location;
+        this.reputation = reputation;
+        this.upVotes = upVotes;
+        this.views = views;
+        this.websiteURL = websiteURL;
+        this.accountId = accountId;
+    }
+
+    public Users(String aboutMe, int age, String displayName, int downVotes, String emailHash, String location,
+                 int reputation, int upVotes, int views, String websiteURL, int accountId) {
+        this.aboutMe = aboutMe;
+        this.age = age;
+        this.displayName = displayName;
+        this.downVotes = downVotes;
+        this.emailHash = emailHash;
         this.location = location;
         this.reputation = reputation;
         this.upVotes = upVotes;

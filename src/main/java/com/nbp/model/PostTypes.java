@@ -4,6 +4,9 @@ public class PostTypes {
     private int id;
     private String type;
 
+    public PostTypes() {
+    }
+
     public PostTypes(int id, String type) {
         this.id = id;
         this.type = type;

@@ -8,6 +8,9 @@ public class Badges {
     private int userId;
     private Timestamp dates;
 
+    public Badges() {
+    }
+
     public Badges(int id, String name, int userId, Timestamp dates) {
         this.id = id;
         this.name = name;

@@ -10,6 +10,9 @@ public class Votes {
     private int voteTypeId;
     private Timestamp creationDate;
 
+    public Votes() {
+    }
+
     public Votes(int id, int postId, int userId, int bountyAmount, int voteTypeId, Timestamp creationDate) {
         this.id = id;
         this.postId = postId;

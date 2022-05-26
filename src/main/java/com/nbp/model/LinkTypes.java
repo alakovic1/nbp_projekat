@@ -4,6 +4,9 @@ public class LinkTypes {
     private int id;
     private String type;
 
+    public LinkTypes() {
+    }
+
     public LinkTypes(int id, String type) {
         this.id = id;
         this.type = type;

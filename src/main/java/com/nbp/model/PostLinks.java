@@ -9,6 +9,9 @@ public class PostLinks {
     private int relatedPostId;
     private int linkTypeId;
 
+    public PostLinks() {
+    }
+
     public PostLinks(int id, Timestamp creationDate, int postId, int relatedPostId, int linkTypeId) {
         this.id = id;
         this.creationDate = creationDate;

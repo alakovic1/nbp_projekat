@@ -24,6 +24,9 @@ public class Posts {
     private String title;
     private int viewCount;
 
+    public Posts() {
+    }
+
     public Posts(int id, int acceptedAnswerId, int answerCount, String body, Timestamp closedDate,
                  int commentCount, Timestamp communityOwnedDate, Timestamp creationDate, int favoriteCount,
                  Timestamp lastActivityDate, Timestamp lastEditDate, String lastEditorDisplayName,

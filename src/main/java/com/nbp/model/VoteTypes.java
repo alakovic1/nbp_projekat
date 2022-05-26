@@ -4,6 +4,9 @@ public class VoteTypes {
     private int id;
     private String name;
 
+    public VoteTypes() {
+    }
+
     public VoteTypes(int id, String name) {
         this.id = id;
         this.name = name;

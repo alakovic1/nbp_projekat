@@ -11,6 +11,9 @@ public class Comments {
     private String text;
     private int userId;
 
+    public Comments() {
+    }
+
     public Comments(int id, Timestamp creationDate, int postId, int score, String text, int userId) {
         this.id = id;
         this.creationDate = creationDate;
