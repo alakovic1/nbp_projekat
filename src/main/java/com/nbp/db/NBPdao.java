@@ -1,6 +1,7 @@
 package com.nbp.db;
 
 import com.nbp.model.Badges;
+import com.nbp.model.PostTypes;
 import com.nbp.model.Users;
 import com.nbp.model.VoteTypes;
 
@@ -13,7 +14,8 @@ public class NBPdao {
 
     private PreparedStatement createUserQuery, newUserIdQuery, readUserQuery, updateUserQuery, deleteUserQuery,
             createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery,
-            newBadgeIdQuery, createBadgeQuery, readBadgeQuery, updateBadgesQuery, deleteBadgeQuery;
+            newBadgeIdQuery, createBadgeQuery, readBadgeQuery, updateBadgesQuery, deleteBadgeQuery,
+            newPostTypesIdQuery, createPostTypesQuery, readPostTypeQuery, updatePostTypeQuery, deletePostTypeQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -68,6 +70,13 @@ public class NBPdao {
             readBadgeQuery = connection.prepareStatement("SELECT * FROM BADGES WHERE id=?");
             updateBadgesQuery = connection.prepareStatement("UPDATE BADGES SET name=?, userid=?, dates=? WHERE id=?");
             deleteBadgeQuery = connection.prepareStatement("DELETE FROM BADGES WHERE id=?");
+
+            //POSTTYPES
+            newPostTypesIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM POSTTYPES");
+            createPostTypesQuery = connection.prepareStatement("INSERT INTO POSTTYPES VALUES(?,?)");
+            readPostTypeQuery = connection.prepareStatement("SELECT * FROM POSTTYPES WHERE id=?");
+            updatePostTypeQuery = connection.prepareStatement("UPDATE POSTTYPES SET type=? WHERE id=?");
+            deletePostTypeQuery = connection.prepareStatement("DELETE FROM POSTTYPES WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -263,7 +272,7 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(badge.getName().equals("")) return null;
+            if(badge.getName() == null) return null;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -287,6 +296,62 @@ public class NBPdao {
         try {
             deleteBadgeQuery.setInt(1, id);
             deleteBadgeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //POSTTYPES
+    public void createPostType(PostTypes pt){
+        try {
+            ResultSet rs = newPostTypesIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createPostTypesQuery.setInt(1,id);
+            createPostTypesQuery.setString(2,pt.getType());
+
+            createPostTypesQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public PostTypes readPostType(int id) {
+        PostTypes pt = new PostTypes("");
+        try {
+            pt.setId(id);
+
+            readPostTypeQuery.setInt(1, pt.getId());
+            ResultSet rs = readPostTypeQuery.executeQuery();
+
+            while(rs.next()) {
+                pt.setType(rs.getString(2));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(pt.getType().equals("")) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pt;
+    }
+
+    public void updatePostType(PostTypes pt){
+        try {
+            updatePostTypeQuery.setInt(2, pt.getId());
+            updatePostTypeQuery.setString(1, pt.getType());
+            updatePostTypeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletePostType(int id) {
+        try {
+            deletePostTypeQuery.setInt(1, id);
+            deletePostTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
