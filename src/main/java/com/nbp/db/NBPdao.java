@@ -1,5 +1,6 @@
 package com.nbp.db;
 
+import com.nbp.model.Badges;
 import com.nbp.model.Users;
 import com.nbp.model.VoteTypes;
 
@@ -11,7 +12,8 @@ public class NBPdao {
     public static Connection connection;
 
     private PreparedStatement createUserQuery, newUserIdQuery, readUserQuery, updateUserQuery, deleteUserQuery,
-            createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery;
+            createVoteTypesQuery, readVoteTypeQuery, newVoteTypesIdQuery, updateVoteTypeQuery, deleteVoteTypeQuery,
+            newBadgeIdQuery, createBadgeQuery, readBadgeQuery, updateBadgesQuery, deleteBadgeQuery;
 
     public static void initialize() {
         instance = new NBPdao();
@@ -52,8 +54,6 @@ public class NBPdao {
             readUserQuery = connection.prepareStatement("SELECT * FROM USERS WHERE id=?");
             updateUserQuery = connection.prepareStatement("UPDATE USERS SET aboutme=?, age=?, creationdate=?, displayname=?, downvotes=?, emailhash=?, lastaccessdate=?, location=?, reputation=?, upvotes=?, views=?, websiteurl=?, accountid=? WHERE id=?");
             deleteUserQuery = connection.prepareStatement("DELETE FROM USERS WHERE id=?");
-            //--fali update
-
 
             //VOTETYPES
             newVoteTypesIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM VOTETYPES");
@@ -61,6 +61,13 @@ public class NBPdao {
             readVoteTypeQuery = connection.prepareStatement("SELECT * FROM VOTETYPES WHERE id=?");
             updateVoteTypeQuery = connection.prepareStatement("UPDATE VOTETYPES SET name=? WHERE id=?");
             deleteVoteTypeQuery = connection.prepareStatement("DELETE FROM VOTETYPES WHERE id=?");
+
+            //BADGES
+            newBadgeIdQuery = connection.prepareStatement("SELECT MAX(id)+1 FROM BADGES");
+            createBadgeQuery = connection.prepareStatement("INSERT INTO BADGES VALUES(?,?,?,?)");
+            readBadgeQuery = connection.prepareStatement("SELECT * FROM BADGES WHERE id=?");
+            updateBadgesQuery = connection.prepareStatement("UPDATE BADGES SET name=?, userid=?, dates=? WHERE id=?");
+            deleteBadgeQuery = connection.prepareStatement("DELETE FROM BADGES WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -218,6 +225,68 @@ public class NBPdao {
         try {
             deleteVoteTypeQuery.setInt(1, id);
             deleteVoteTypeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //BADGES
+    public void createBadge(Badges badge){
+        try {
+            ResultSet rs = newBadgeIdQuery.executeQuery();
+            int id = 1;
+            if(rs.next()) id = rs.getInt(1);
+
+            createBadgeQuery.setInt(1,id);
+            createBadgeQuery.setString(2,badge.getName());
+            createBadgeQuery.setInt(3,badge.getUserId());
+            createBadgeQuery.setTimestamp(4,badge.getDates());
+
+            createBadgeQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Badges readBadge(int id) {
+        Badges badge = new Badges();
+        try {
+            badge.setId(id);
+
+            readBadgeQuery.setInt(1, badge.getId());
+            ResultSet rs = readBadgeQuery.executeQuery();
+
+            while(rs.next()) {
+                badge.setName(rs.getString(2));
+                badge.setUserId(rs.getInt(3));
+                badge.setDates(rs.getTimestamp(4));
+            }
+
+            //u bazi mora postojati neka vrijednost (po shemi)
+            if(badge.getName().equals("")) return null;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return badge;
+    }
+
+    public void updateBadge(Badges badges){
+        try {
+            updateBadgesQuery.setInt(4, badges.getId());
+            updateBadgesQuery.setString(1, badges.getName());
+            updateBadgesQuery.setInt(2, badges.getUserId());
+            updateBadgesQuery.setTimestamp(3, badges.getDates());
+            updateBadgesQuery.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteBadge(int id) {
+        try {
+            deleteBadgeQuery.setInt(1, id);
+            deleteBadgeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
