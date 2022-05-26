@@ -3,7 +3,6 @@ package com.nbp.db;
 import com.nbp.model.*;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class NBPdao {
     public static NBPdao instance = null;
@@ -116,26 +115,19 @@ public class NBPdao {
             deletePostQuery = connection.prepareStatement("DELETE FROM POSTS WHERE id=?");
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
     }
 
     //USERS
-    public int getMaxSizeUsers(){
+    public void createUser(Users user){
         try {
             ResultSet rs = newUserIdQuery.executeQuery();
             int id = 1;
             if(rs.next()) id = rs.getInt(1);
-            return id;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        return 0;
-    }
-    public void createUser(Users user){
-        try {
-            createUserQuery.setInt(1,getMaxSizeUsers());
+            createUserQuery.setInt(1,id);
             createUserQuery.setString(2,user.getAboutMe());
             createUserQuery.setInt(3,user.getAge());
             createUserQuery.setTimestamp(4,user.getCreationDate());
@@ -153,6 +145,7 @@ public class NBPdao {
             createUserQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -181,10 +174,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(user.getCreationDate() == null) return null;
+            if(user.getCreationDate() == null) return new Users();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return user;
     }
@@ -205,18 +199,22 @@ public class NBPdao {
             updateUserQuery.setInt(11,user.getViews());
             updateUserQuery.setString(12,user.getWebsiteURL());
             updateUserQuery.setInt(13,user.getAccountId());
+
             updateUserQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deleteUser(int id) {
         try {
             deleteUserQuery.setInt(1, id);
+
             deleteUserQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -233,6 +231,7 @@ public class NBPdao {
             createVoteTypesQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -249,10 +248,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(vt.getName().equals("")) return null;
+            if(vt.getName().equals("")) return new VoteTypes();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return vt;
     }
@@ -261,18 +261,22 @@ public class NBPdao {
         try {
             updateVoteTypeQuery.setInt(2, vt.getId());
             updateVoteTypeQuery.setString(1, vt.getName());
+
             updateVoteTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deleteVoteType(int id) {
         try {
             deleteVoteTypeQuery.setInt(1, id);
+
             deleteVoteTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -291,6 +295,7 @@ public class NBPdao {
             createBadgeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -309,10 +314,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(badge.getName() == null) return null;
+            if(badge.getName() == null) return new Badges();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return badge;
     }
@@ -323,18 +329,22 @@ public class NBPdao {
             updateBadgesQuery.setString(1, badges.getName());
             updateBadgesQuery.setInt(2, badges.getUserId());
             updateBadgesQuery.setTimestamp(3, badges.getDates());
+
             updateBadgesQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deleteBadge(int id) {
         try {
             deleteBadgeQuery.setInt(1, id);
+
             deleteBadgeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -351,6 +361,7 @@ public class NBPdao {
             createPostTypesQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -367,10 +378,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(pt.getType().equals("")) return null;
+            if(pt.getType().equals("")) return new PostTypes();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return pt;
     }
@@ -379,18 +391,22 @@ public class NBPdao {
         try {
             updatePostTypeQuery.setInt(2, pt.getId());
             updatePostTypeQuery.setString(1, pt.getType());
+
             updatePostTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deletePostType(int id) {
         try {
             deletePostTypeQuery.setInt(1, id);
+
             deletePostTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -407,6 +423,7 @@ public class NBPdao {
             createLinkTypesQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -423,10 +440,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(lt.getType().equals("")) return null;
+            if(lt.getType().equals("")) return new LinkTypes();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return lt;
     }
@@ -435,18 +453,22 @@ public class NBPdao {
         try {
             updateLinkTypeQuery.setInt(2, lt.getId());
             updateLinkTypeQuery.setString(1, lt.getType());
+
             updateLinkTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deleteLinkType(int id) {
         try {
             deleteLinkTypeQuery.setInt(1, id);
+
             deleteLinkTypeQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -467,6 +489,7 @@ public class NBPdao {
             createCommentsQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -487,10 +510,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(comment.getCreationDate() == null) return null;
+            if(comment.getCreationDate() == null) return new Comments();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return comment;
     }
@@ -503,18 +527,22 @@ public class NBPdao {
             updateCommentQuery.setInt(3,comment.getScore());
             updateCommentQuery.setString(4,comment.getText());
             updateCommentQuery.setInt(5,comment.getUserId());
+
             updateCommentQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deleteComment(int id) {
         try {
             deleteCommentQuery.setInt(1, id);
+
             deleteCommentQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -534,6 +562,7 @@ public class NBPdao {
             createPostLinkQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -553,10 +582,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(pl.getCreationDate() == null) return null;
+            if(pl.getCreationDate() == null) return new PostLinks();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return pl;
     }
@@ -568,18 +598,22 @@ public class NBPdao {
             updatePostLinkQuery.setInt(2,pl.getPostId());
             updatePostLinkQuery.setInt(3,pl.getRelatedPostId());
             updatePostLinkQuery.setInt(4,pl.getLinkTypeId());
+
             updatePostLinkQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deletePostLink(int id) {
         try {
             deletePostLinkQuery.setInt(1, id);
+
             deletePostLinkQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -600,6 +634,7 @@ public class NBPdao {
             createVoteQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -620,10 +655,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(vote.getCreationDate() == null) return null;
+            if(vote.getCreationDate() == null) return new Votes();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return vote;
     }
@@ -636,18 +672,22 @@ public class NBPdao {
             updateVoteQuery.setInt(3,vote.getBountyAmount());
             updateVoteQuery.setInt(4,vote.getVoteTypeId());
             updateVoteQuery.setTimestamp(5,vote.getCreationDate());
+
             updateVoteQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deleteVote(int id) {
         try {
             deleteVoteQuery.setInt(1, id);
+
             deleteVoteQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -682,6 +722,7 @@ public class NBPdao {
             createPostQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -716,10 +757,11 @@ public class NBPdao {
             }
 
             //u bazi mora postojati neka vrijednost (po shemi)
-            if(post.getCreationDate() == null) return null;
+            if(post.getCreationDate() == null) return new Posts();
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return post;
     }
@@ -746,18 +788,22 @@ public class NBPdao {
             updatePostQuery.setString(17,post.getTags());
             updatePostQuery.setString(18,post.getTitle());
             updatePostQuery.setInt(19,post.getViewCount());
+
             updatePostQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
     public void deletePost(int id) {
         try {
             deletePostQuery.setInt(1, id);
+
             deletePostQuery.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

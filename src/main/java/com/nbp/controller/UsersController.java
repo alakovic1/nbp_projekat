@@ -2,7 +2,6 @@ package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
 import com.nbp.model.Users;
-import com.nbp.model.VoteTypes;
 import com.nbp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,7 @@ public class UsersController {
             nbpDao.createUser(user);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "User created and added successfully!!");
     }
@@ -46,6 +46,7 @@ public class UsersController {
             nbpDao.updateUser(user);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "User updated successfully!!");
     }
@@ -56,6 +57,7 @@ public class UsersController {
             nbpDao.deleteUser(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "User deleted successfully!!");
     }

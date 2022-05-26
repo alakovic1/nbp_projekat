@@ -2,7 +2,6 @@ package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
 import com.nbp.model.Badges;
-import com.nbp.model.Users;
 import com.nbp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,7 @@ public class BadgesController {
             nbpDao.createBadge(badge);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Badge created and added successfully!!");
     }
@@ -45,6 +45,7 @@ public class BadgesController {
             nbpDao.updateBadge(badge);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Badge updated successfully!!");
     }
@@ -55,6 +56,7 @@ public class BadgesController {
             nbpDao.deleteBadge(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Badge deleted successfully!!");
     }

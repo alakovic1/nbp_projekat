@@ -2,7 +2,6 @@ package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
 import com.nbp.model.Comments;
-import com.nbp.model.PostTypes;
 import com.nbp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,7 @@ public class CommentsController {
             nbpDao.createComment(comment);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Comment created and added successfully!!");
     }
@@ -44,6 +44,7 @@ public class CommentsController {
             nbpDao.updateComment(comment);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Comment updated successfully!!");
     }
@@ -54,6 +55,7 @@ public class CommentsController {
             nbpDao.deleteComment(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Comment deleted successfully!!");
     }

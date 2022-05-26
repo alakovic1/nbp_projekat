@@ -1,6 +1,5 @@
 package com.nbp.model;
 
-
 import java.sql.*;
 
 public class Comments {

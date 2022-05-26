@@ -2,7 +2,6 @@ package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
 import com.nbp.model.Posts;
-import com.nbp.model.Users;
 import com.nbp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +28,7 @@ public class PostsController {
             nbpDao.createPost(post);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Post created and added successfully!!");
     }
@@ -52,6 +52,7 @@ public class PostsController {
             nbpDao.updatePost(post);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Post updated successfully!!");
     }
@@ -62,6 +63,7 @@ public class PostsController {
             nbpDao.deletePost(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Post deleted successfully!!");
     }

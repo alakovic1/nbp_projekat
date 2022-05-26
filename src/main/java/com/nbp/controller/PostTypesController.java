@@ -17,6 +17,7 @@ public class PostTypesController {
             nbpDao.createPostType(pt);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "PostType created and added successfully!!");
     }
@@ -32,6 +33,7 @@ public class PostTypesController {
             nbpDao.updatePostType(pt);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "PostType updated successfully!!");
     }
@@ -42,6 +44,7 @@ public class PostTypesController {
             nbpDao.deletePostType(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "PostType deleted successfully!!");
     }

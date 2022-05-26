@@ -1,7 +1,6 @@
 package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
-import com.nbp.model.PostLinks;
 import com.nbp.model.Votes;
 import com.nbp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ public class VotesController {
             nbpDao.createVote(vote);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Vote created and added successfully!!");
     }
@@ -44,6 +44,7 @@ public class VotesController {
             nbpDao.updateVote(vote);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Vote updated successfully!!");
     }
@@ -54,6 +55,7 @@ public class VotesController {
             nbpDao.deleteVote(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "Vote deleted successfully!!");
     }

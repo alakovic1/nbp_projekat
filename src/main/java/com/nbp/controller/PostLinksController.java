@@ -1,7 +1,6 @@
 package com.nbp.controller;
 
 import com.nbp.db.NBPdao;
-import com.nbp.model.Comments;
 import com.nbp.model.PostLinks;
 import com.nbp.response.ResponseMessage;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ public class PostLinksController {
             nbpDao.createPostLink(pl);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "PostLink created and added successfully!!");
     }
@@ -44,6 +44,7 @@ public class PostLinksController {
             nbpDao.updatePostLink(pl);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "PostLink updated successfully!!");
     }
@@ -54,6 +55,7 @@ public class PostLinksController {
             nbpDao.deletePostLink(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "PostLink deleted successfully!!");
     }

@@ -17,6 +17,7 @@ public class VoteTypesController {
             nbpDao.createVoteType(vt);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "VoteType created and added successfully!!");
     }
@@ -32,6 +33,7 @@ public class VoteTypesController {
             nbpDao.updateVoteType(vt);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "VoteType updated successfully!!");
     }
@@ -42,6 +44,7 @@ public class VoteTypesController {
             nbpDao.deleteVoteType(id);
         } catch (Exception e){
             System.out.println(e.getMessage());
+            return new ResponseMessage(false, HttpStatus.BAD_REQUEST, "There is an error with this request, see log!!");
         }
         return new ResponseMessage(true, HttpStatus.OK, "VoteType deleted successfully!!");
     }
