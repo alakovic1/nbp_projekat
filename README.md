@@ -1,4 +1,4 @@
-# Napredne baze podataka - PROJEKAT
+# Napredne baze podataka - PROJEKAT 
 
 - Java 18
 - Oracle JDBC driver
